@@ -1,0 +1,69 @@
+﻿@page "/esportaclienti"
+
+@using BlazingCRM.Docker.Data
+@inject IJSRuntime iJSRuntime
+@inject IClienteService ClienteService
+
+<h2>ESPORTA CLIENTI</h2>
+
+<p>
+    <input type="button" value="ESPORTA" @onclick="@EsportaInExcel" class="btn btn-outline-primary" />
+</p>
+
+<p>
+    <hr />
+</p>
+
+@if (clienti == null)
+{
+    <img src="./basicloader.gif" />
+
+}
+else
+{
+    <table class='table'>
+        <thead>
+            <tr>
+                <th>Tipologia</th>
+                <th>Azienda</th>
+                <th>Cognome</th>
+                <th>Nome</th>
+                <th>Indirizzo</th>
+                <th>Comune</th>
+                <th>Telefono</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var cliente in clienti)
+            {
+            <tr>
+                <td>@cliente.Tipologia</td>
+                <td>@cliente.Azienda</td>
+                <td>@cliente.Cognome</td>
+                <td>@cliente.Nome</td>
+                <td>@cliente.Indirizzo</td>
+                <td>@cliente.Comune</td>
+                <td>@cliente.Telefono</td>
+                <td>@cliente.Email</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    List<Cliente> clienti;
+
+    protected override async Task OnInitializedAsync()
+    {
+        clienti = await ClienteService.ElencoClienti();
+    }
+
+
+    protected async Task EsportaInExcel()
+    {
+        Esporta esporta = new Esporta();
+        await esporta.Excel(iJSRuntime);
+    }
+}

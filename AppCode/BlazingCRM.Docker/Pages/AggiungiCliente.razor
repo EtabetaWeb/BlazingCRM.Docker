@@ -1,0 +1,81 @@
+﻿@page "/aggiungicliente"
+
+@using BlazingCRM.Docker.Data
+@inject IClienteService ClienteService
+@inject NavigationManager NavigationManager
+
+<h2>AGGIUNGI CLIENTE</h2>
+
+<p>
+    <hr />
+</p>
+
+<form>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group">
+                <label for="Tipologia" class="control-label">Tipologia cliente</label>
+                <select @bind="@cliente.Tipologia" class="form-control">
+                    <option selected disabled value="-1">Selezionare una tipologia</option>
+                    <option value="Azienda">Azienda</option>
+                    <option value="Privato">Privato</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="Azienda" class="control-label">Azienda</label>
+                <input for="Azienda" class="form-control" @bind="@cliente.Azienda" />
+            </div>
+            <div class="form-group">
+                <label for="Cognome" class="control-label">Cognome</label>
+                <input for="Cognome" class="form-control" @bind="@cliente.Cognome" />
+            </div>
+            <div class="form-group">
+                <label for="Nome" class="control-label">Nome</label>
+                <input for="Nome" class="form-control" @bind="@cliente.Nome" />
+            </div>
+            <div class="form-group">
+                <label for="Indirizzo" class="control-label">Indirizzo</label>
+                <input for="Indirizzo" class="form-control" @bind="@cliente.Indirizzo" />
+            </div>
+            <div class="form-group">
+                <label for="Comune" class="control-label">Comune</label>
+                <input for="Comune" class="form-control" @bind="@cliente.Comune" />
+            </div>
+            <div class="form-group">
+                <label for="Telefono" class="control-label">Telefono</label>
+                <input for="Telefono" class="form-control" @bind="@cliente.Telefono" />
+            </div>
+            <div class="form-group">
+                <label for="Email" class="control-label">Email</label>
+                <input for="Email" class="form-control" @bind="@cliente.Email" />
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="button" class="btn btn-outline-danger" @onclick="@Annulla" value="ANNULLA" />
+                <input type="button" class="btn btn-outline-success" @onclick="@Conferma" value="CONFERMA" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@code {
+
+
+    Cliente cliente = new Cliente();
+
+    protected async Task Conferma()
+    {
+        await ClienteService.AggiungiCliente(cliente);
+        NavigationManager.NavigateTo("listaclienti");
+    }
+
+    void Annulla()
+    {
+        NavigationManager.NavigateTo("listaclienti");
+    }
+
+}

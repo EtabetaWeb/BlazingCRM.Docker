@@ -1,0 +1,77 @@
+﻿@page "/cancellacliente/{id}"
+
+@using BlazingCRM.Docker.Data
+@inject IClienteService ClienteService
+@inject NavigationManager NavigationManager
+
+<h2>CANCELLA CLIENTE</h2>
+
+<p>
+    <hr />
+</p>
+
+<form>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group">
+                <p>Sei sicuro di voler cancellare il cliente <span class="text-danger text-capitalize font-weight-bold">@cliente.Cognome @cliente.Nome</span>?</p>
+            </div>
+            <div class="form-group">
+                <label for="Cognome" class="control-label">Cognome</label>
+                <input for="Cognome" class="form-control" value="@cliente.Cognome" />
+
+            </div>
+            <div class="form-group">
+                <label for="Nome" class="control-label">Nome</label>
+                <input for="Nome" class="form-control" value="@cliente.Nome" />
+            </div>
+            <div class="form-group">
+                <label for="Indirizzo" class="control-label">Indirizzo</label>
+                <input for="Indirizzo" class="form-control" value="@cliente.Indirizzo" />
+            </div>
+            <div class="form-group">
+                <label for="Comune" class="control-label">Comune</label>
+                <input for="Comune" class="form-control" value="@cliente.Comune" />
+            </div>
+            <div class="form-group">
+                <label for="Telefono" class="control-label">Telefono</label>
+                <input for="Telefono" class="form-control" value="@cliente.Telefono" />
+            </div>
+            <div class="form-group">
+                <label for="Email" class="control-label">Email</label>
+                <input for="Email" class="form-control" value="@cliente.Email" />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="button" class="btn btn-outline-danger" @onclick="@Annulla" value="ANNULLA" />
+                <input type="button" class="btn btn-outline-success" @onclick="@Conferma" value="CONFERMA" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@code {
+
+    [Parameter]
+    public string id { get; set; }
+    Cliente cliente = new Cliente();
+
+    protected override async Task OnInitializedAsync()
+    {
+        cliente = await ClienteService.DatiCliente(id);
+    }
+
+    protected async Task Conferma()
+    {
+        await ClienteService.CancellaCliente(id);
+        NavigationManager.NavigateTo("listaclienti");
+    }
+
+    void Annulla()
+    {
+        NavigationManager.NavigateTo("listaclienti");
+    }
+}

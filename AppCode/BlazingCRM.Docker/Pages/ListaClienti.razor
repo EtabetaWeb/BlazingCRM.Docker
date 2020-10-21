@@ -1,0 +1,62 @@
+﻿@page "/listaclienti"
+
+@using BlazingCRM.Docker.Data
+@inject IClienteService ClienteService
+
+<h2>LISTA CLIENTI</h2>
+<p>
+    <a href="/aggiungicliente" class="btn btn-primary">Aggiungi cliente</a>
+</p>
+
+@if (clienti == null)
+{
+    <img src="./basicloader.gif" />
+
+}
+else
+{
+    <table class='table'>
+        <thead>
+            <tr>
+                <th>Tipologia</th>
+                <th>Azienda</th>
+                <th>Cognome</th>
+                <th>Nome</th>
+                <th>Indirizzo</th>
+                <th>Comune</th>
+                <th>Telefono</th>
+                <th>Email</th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var cliente in clienti)
+            {
+            <tr>
+                <td>@cliente.Tipologia</td>
+                <td>@cliente.Azienda</td>
+                <td>@cliente.Cognome</td>
+                <td>@cliente.Nome</td>
+                <td>@cliente.Indirizzo</td>
+                <td>@cliente.Comune</td>
+                <td>@cliente.Telefono</td>
+                <td>@cliente.Email</td>
+                <td>
+                    <a href='/cancellacliente/@cliente.Id' class="btn btn-warning">Cancella</a>
+                    <a href='/modificacliente/@cliente.Id' class="btn btn-primary">Modifica</a>
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    List<Cliente> clienti;
+
+    protected override async Task OnInitializedAsync()
+    {
+        clienti = await ClienteService.ElencoClienti();
+    }
+
+}
